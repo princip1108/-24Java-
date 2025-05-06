@@ -20,13 +20,7 @@ public class StatisticsService {
     }
 
     public DataResponse getMainPageData(DataRequest dataRequest) {
-        Date day = new Date();
-        Date monthDay = DateTimeTool.prevMonth(day);
-        int i;
-        Integer id;
-        Object[] a;
-        Long l;
-        String name;
+
         long total = userRepository.count();
         Integer monthCount = userRepository.countLastLoginTime(DateTimeTool.parseDateTime(monthDay,"yyyy-MM-dd")+" 00:00:00");
         Integer dayCount = userRepository.countLastLoginTime(DateTimeTool.parseDateTime(day,"yyyy-MM-dd")+" 00:00:00");
