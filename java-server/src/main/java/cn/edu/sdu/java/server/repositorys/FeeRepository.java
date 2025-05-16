@@ -20,10 +20,9 @@ public interface FeeRepository extends JpaRepository<Fee,Integer> {
     List<Fee> findListByStudent(Integer personId);
 
 
-    @Query(value= "from Fee where teacher.personId=?1 order by day")
-    List<Fee> findListByTeacher(Integer personId);
 
-    @Query(value = "select sum(money) from Fee where (teacher.personId=?1 or teacher.personId=?1)  and day like ?2%")
+
+    @Query(value = "select sum(money) from Fee where (student.personId=?1 )  and day like ?2%")
     Double getMoneyByPersonIdAndDate(Integer personId,String date);
 
 }

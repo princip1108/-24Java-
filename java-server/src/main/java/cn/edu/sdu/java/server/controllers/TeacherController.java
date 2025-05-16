@@ -2,7 +2,7 @@ package cn.edu.sdu.java.server.controllers;
 
 import cn.edu.sdu.java.server.payload.request.DataRequest;
 import cn.edu.sdu.java.server.payload.response.DataResponse;
-import cn.edu.sdu.java.server.services.TeacherService;
+import cn.edu.sdu.java.server.services.TeacherServices;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,49 +17,40 @@ import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBo
 @RequestMapping("/api/teacher")
 public class TeacherController{
 
-    private final TeacherService teacherService;
+    private final TeacherServices teacherServices;
 
-    public TeacherController(TeacherService teacherService) {
-        this.teacherService = teacherService;
+    public TeacherController(TeacherServices teacherServices) {
+        this.teacherServices = teacherServices;
     }
     @PostMapping("/getTeacherList")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getTeacherList(@Valid @RequestBody DataRequest dataRequest) {
-        return  teacherService.getTeacherList(dataRequest);
+        return  teacherServices.getTeacherList(dataRequest);
     }
     @PostMapping("/teacherDelete")
     public DataResponse teacherDelete(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherService.teacherDelete(dataRequest);
+        return teacherServices.teacherDelete(dataRequest);
     }
     @PostMapping("/getTeacherInfo")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getTeacherInfo(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherService.getTeacherInfo(dataRequest);
+        return teacherServices.getTeacherInfo(dataRequest);
     }
     @PostMapping("/teacherEditSave")
     @PreAuthorize(" hasRole('ADMIN')")
     public DataResponse teacherEditSave(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherService.teacherEditSave(dataRequest);
+        return teacherServices.teacherEditSave(dataRequest);
     }
     @PostMapping("/getTeacherListExcl")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<StreamingResponseBody> getTeacherListExcl(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherService.getTeacherListExcl(dataRequest);
+        return teacherServices.getTeacherListExcl(dataRequest);
     }
     @PostMapping("/getTeacherPageData")
     @PreAuthorize(" hasRole('ADMIN')")
     public DataResponse getTeacherPageData(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherService.getTeacherPageData(dataRequest);
+        return teacherServices.getTeacherPageData(dataRequest);
     }
-    @PostMapping("/getFamilyMemberList")
-    @PreAuthorize(" hasRole('ADMIN') or  hasRole('TEACHER')")
-    public DataResponse getFamilyMemberList(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherService.getFamilyMemberList(dataRequest);
-    }
-    @PostMapping("/familyMemberSave")
-    @PreAuthorize(" hasRole('ADMIN') or  hasRole('TEACHER')")
-    public DataResponse familyMemberSave(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherService.familyMemberSave(dataRequest);
-    }
-
 }
+
+

@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(	name = "family_member",
+@Table(    name = "family_member",
         uniqueConstraints = {
         })
 public class FamilyMember {
@@ -27,5 +27,6 @@ public class FamilyMember {
     private Integer age;
     @Size(max=50)
     private String unit;
+
 
 }
