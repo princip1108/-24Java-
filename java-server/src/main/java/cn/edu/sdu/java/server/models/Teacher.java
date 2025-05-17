@@ -21,9 +21,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "teacher",
-        uniqueConstraints = {
-        })
+@Table(name = "teacher")
 public class Teacher {
     /**
      * 教师ID，与Person表的personId相同
@@ -35,7 +33,7 @@ public class Teacher {
      * 关联的Person对象，包含基本人员信息
      */
     @OneToOne
-    @JoinColumn(name="personId")
+    @JoinColumn(name="person_id")
     @JsonIgnore
     private Person person;
 
@@ -54,17 +52,18 @@ public class Teacher {
     /**
      * 入职时间
      */
-    private Date enterTime;
+    @Temporal(TemporalType.DATE)
+    private Date entryDate;
 
     /**
-     * 指导的学生数量
+     * 学生数量
      */
-    private Integer studentNum;
+    private Integer studentCount;
 
     /**
-     * 所教班级名称
+     * 班级名称
      */
-    @Size(max = 50)
+    @Size(max=100)
     private String className;
 
     /**
@@ -84,18 +83,4 @@ public class Teacher {
     public String getNum() {
         return person != null ? person.getNum() : null;
     }
-
-    /**
-     * 获取教师所属学院（从关联的Person对象中获取）
-     * @return 所属学院
-     */
-    @Transient
-    public String getDept() {
-        return person != null ? person.getDept() : null;
-    }
 }
-
-
-
-
-

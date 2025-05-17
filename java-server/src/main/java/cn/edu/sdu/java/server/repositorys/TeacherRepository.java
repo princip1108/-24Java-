@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,4 +45,9 @@ public interface TeacherRepository extends JpaRepository<Teacher, Integer> {
     // 获取某个学院的所有教师
     @Query("SELECT t FROM Teacher t JOIN t.person p WHERE p.dept = :dept")
     List<Teacher> findByDepartment(@Param("dept") String dept);
+
+    // 添加查询方法，按入职时间范围查询教师
+    @Query("SELECT t FROM Teacher t WHERE t.entryDate BETWEEN :startDate AND :endDate")
+    List<Teacher> findByEntryDateBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }
+

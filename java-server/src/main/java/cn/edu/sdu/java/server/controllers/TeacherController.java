@@ -1,56 +1,48 @@
 package cn.edu.sdu.java.server.controllers;
 
+import cn.edu.sdu.java.server.models.Teacher;
 import cn.edu.sdu.java.server.payload.request.DataRequest;
 import cn.edu.sdu.java.server.payload.response.DataResponse;
 import cn.edu.sdu.java.server.services.TeacherServices;
 import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-
-
+import java.util.Date;
+import java.util.List;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/teacher")
-public class TeacherController{
+public class TeacherController {
 
     private final TeacherServices teacherServices;
 
     public TeacherController(TeacherServices teacherServices) {
         this.teacherServices = teacherServices;
     }
-    @PostMapping("/getTeacherList")
+
+    // ... 其他方法保持不变 ...
+
+    @PostMapping("/getTeachersByEntryDate")
     @PreAuthorize("hasRole('ADMIN')")
-    public DataResponse getTeacherList(@Valid @RequestBody DataRequest dataRequest) {
-        return  teacherServices.getTeacherList(dataRequest);
+    public DataResponse getTeachersByEntryDate(@Valid @RequestBody DataRequest dataRequest) {
+        Date startDate = dataRequest.getDate("startDate");
+        Date endDate = dataRequest.getDate("endDate");
+        List<Teacher> teachers = teacherServices.getTeachersByEntryDate(startDate, endDate);
+
+        // 创建标准响应
+        DataResponse response = new DataResponse();
+        response.setCode(200);
+        response.setMsg("查询成功");
+        response.setData(teachers);
+        return response;
     }
-    @PostMapping("/teacherDelete")
-    public DataResponse teacherDelete(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherServices.teacherDelete(dataRequest);
-    }
-    @PostMapping("/getTeacherInfo")
+
+    @PostMapping("/addTeacher")
     @PreAuthorize("hasRole('ADMIN')")
-    public DataResponse getTeacherInfo(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherServices.getTeacherInfo(dataRequest);
-    }
-    @PostMapping("/teacherEditSave")
-    @PreAuthorize(" hasRole('ADMIN')")
-    public DataResponse teacherEditSave(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherServices.teacherEditSave(dataRequest);
-    }
-    @PostMapping("/getTeacherListExcl")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<StreamingResponseBody> getTeacherListExcl(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherServices.getTeacherListExcl(dataRequest);
-    }
-    @PostMapping("/getTeacherPageData")
-    @PreAuthorize(" hasRole('ADMIN')")
-    public DataResponse getTeacherPageData(@Valid @RequestBody DataRequest dataRequest) {
-        return teacherServices.getTeacherPageData(dataRequest);
+    public DataResponse addTeacher(@Valid @RequestBody DataRequest dataRequest) {
+        // 调用服务层方法添加教师
+        return teacherServices.addTeacher(dataRequest);
     }
 }
-
-
