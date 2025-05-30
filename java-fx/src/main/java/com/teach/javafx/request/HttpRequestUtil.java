@@ -65,20 +65,24 @@ public class HttpRequestUtil {
      * @return DataResponse 返回后台返回数据
      */
     public static DataResponse request(String url, DataRequest request){
+            // 先添加username，再序列化
+            request.add("username",AppStore.getJwt().getUsername());
+
             HttpRequest httpRequest = HttpRequest.newBuilder()
                     .uri(URI.create(serverUrl + url))
                     .POST(HttpRequest.BodyPublishers.ofString(gson.toJson(request)))
                     .headers("Content-Type", "application/json")
                     .headers("Authorization", "Bearer " + AppStore.getJwt().getToken())
                     .build();
-            request.add("username",AppStore.getJwt().getUsername());
             HttpClient client = HttpClient.newHttpClient();
             try {
                 HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
                 System.out.println("url=" + url +"    response.statusCode="+response.statusCode());
                 if (response.statusCode() == 200) {
-                    //                System.out.println(response.body());
+                    System.out.println("响应内容: " + response.body());
                     return gson.fromJson(response.body(), DataResponse.class);
+                } else {
+                    System.out.println("HTTP错误: " + response.statusCode() + ", 响应: " + response.body());
                 }
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();

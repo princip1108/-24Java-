@@ -70,6 +70,7 @@ public class Person {
 
     @Size(max = 1000)
     private String introduce;
+    private String entrydate;
 
 
 }

@@ -9,6 +9,9 @@
       </list>
     </option>
   </component>
+  <component name="ProjectResources">
+    <resource url="http://javafx.com/javafx/17.0.12" location="$USER_HOME$/.jdks/openjdk-23!/jdk.jfr/jdk/jfr/internal/jfc/jfc.xsd" />
+  </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_23" default="true" project-jdk-name="openjdk-23" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
