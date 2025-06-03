@@ -6,17 +6,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
-
-/*
- * Course 数据操作接口，主要实现Course数据的查询操作
- */
 
 @Repository
-public interface CourseRepository extends JpaRepository<Course,Integer> {
-    @Query(value = "from Course where ?1='' or num like %?1% or name like %?1% ")
-    List<Course> findCourseListByNumName(String numName);
+public interface CourseRepository extends JpaRepository<Course, Integer> {
 
-    Optional<Course> findByNum(String num);
-    List<Course> findByName(String name);
+    // 根据课序号查询课程
+    Course findByCourseCode(String courseCode);
+
+    // 根据课程名称模糊查询
+    @Query("SELECT c FROM Course c WHERE c.name LIKE %:name%")
+    List<Course> findByNameContaining(String name);
+
+    // 根据课程类型查询
+    List<Course> findByType(String type);
+
+    // 综合查询（课序号/名称/类型）
+    @Query("SELECT c FROM Course c WHERE " +
+            "(:courseCode IS NULL OR c.courseCode = :courseCode) AND " +
+            "(:name IS NULL OR c.name LIKE %:name%) AND " +
+            "(:type IS NULL OR c.type = :type)")
+    List<Course> findByCriteria(String courseCode, String name, String type);
+
 }

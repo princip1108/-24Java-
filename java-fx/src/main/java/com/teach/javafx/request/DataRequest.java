@@ -10,13 +10,18 @@ import java.util.*;
  */
 public class DataRequest {
     private Map<String,Object> data;
+    private Map<String, Object> params;
 
     public DataRequest() {
         data = new HashMap<>();
+        params = new HashMap<>();
     }
 
     public Map<String,Object> getData() {
         return data;
+    }
+    public Map<String, Object> getParams() {
+        return params;
     }
 
     public void setData(Map<String,Object> data) {
@@ -46,6 +51,7 @@ public class DataRequest {
             return (Boolean)obj;
         return "true".equals(obj.toString());
     }
+
 
     public List<?> getList(String key){
         Object obj = data.get(key);

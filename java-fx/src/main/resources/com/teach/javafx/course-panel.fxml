@@ -1,20 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.BorderPane?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<!-- 学生个人简历界面 FXML配置文件 对应页面交互控制类 com.teach.javafx.controller.StudentIntroduceController -->
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
-<BorderPane  maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            style= "-fx-background-image: url('shanda1.jpg'); -fx-background-repeat: no-repeat; -fx-background-size: cover;" fx:controller="com.teach.javafx.controller.CourseController">
+<!-- 课程管理界面 FXML配置文件 对应页面交互控制类 com.teach.javafx.controller.CourseController -->
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           style="-fx-background-image: url('shanda1.jpg'); -fx-background-repeat: no-repeat; -fx-background-size: cover;"
+           fx:controller="com.teach.javafx.controller.CourseController">
+
+   <!-- 顶部查询条件区域 -->
+   <top>
+      <VBox spacing="10" style="-fx-background-color: rgba(255, 255, 255, 0.9); -fx-padding: 15;">
+         <HBox spacing="15" alignment="CENTER_LEFT">
+            <Label text="课序号:" />
+            <TextField fx:id="courseCodeField" prefWidth="120" promptText="请输入课序号" />
+
+            <Label text="课程名称:" />
+            <TextField fx:id="nameField" prefWidth="120" promptText="请输入课程名称" />
+
+            <Label text="课程类型:" />
+            <ComboBox fx:id="typeComboBox" prefWidth="100" />
+
+            <Button fx:id="queryButton" text="查询" onAction="#onQueryButtonClick"
+                   style="-fx-background-color: #4CAF50; -fx-text-fill: white;" />
+            <Button fx:id="addButton" text="添加课程" onAction="#onAddButtonClick"
+                   style="-fx-background-color: #2196F3; -fx-text-fill: white;" />
+         </HBox>
+      </VBox>
+   </top>
+
+   <!-- 中间表格区域 -->
    <center>
-      <TableView fx:id="dataTableView"  >
+      <TableView fx:id="dataTableView" style="-fx-background-color: rgba(255, 255, 255, 0.95);">
          <columns>
-            <TableColumn fx:id="numColumn" prefWidth="120.0" text="课程号" />
-            <TableColumn fx:id="nameColumn" prefWidth="90.0" text="课程名" />
-            <TableColumn fx:id="creditColumn" prefWidth="60.0" text="学分" />
-            <TableColumn fx:id="preCourseColumn" prefWidth="120.0" text="前序课" />
-            <TableColumn fx:id="operateColumn" prefWidth="120.0" text="操作" />
+            <TableColumn fx:id="courseCodeColumn" prefWidth="120.0" text="课序号" />
+            <TableColumn fx:id="nameColumn" prefWidth="200.0" text="课程名称" />
+            <TableColumn fx:id="creditColumn" prefWidth="80.0" text="学分" />
+            <TableColumn fx:id="typeColumn" prefWidth="100.0" text="课程类型" />
+            <TableColumn fx:id="operateColumn" prefWidth="150.0" text="操作" />
          </columns>
       </TableView>
    </center>

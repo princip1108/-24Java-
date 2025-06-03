@@ -6,18 +6,32 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-/*
- * Score 数据操作接口，主要实现Score数据的查询操作
- * List<Score> findByStudentPersonId(Integer personId);  根据关联的Student的student_id查询获得List<Score>对象集合,  命名规范
- */
 
 @Repository
-public interface ScoreRepository extends JpaRepository<Score,Integer> {
-    List<Score> findByStudentPersonId(Integer personId);
-    @Query(value="from Score where (?1=0 or student.personId=?1) and (?2=0 or course.courseId=?2)" )
-    List<Score> findByStudentCourse(Integer personId, Integer courseId);
+public interface ScoreRepository extends JpaRepository<Score, Integer> {
 
-    @Query(value="from Score where student.personId=?1 and (?2=0 or course.name like %?2%)" )
-    List<Score> findByStudentCourse(Integer personId, String courseName);
+    // 根据学生ID查询成绩
+    List<Score> findByStudentPersonId(Integer personId);
+
+    // 根据课程ID查询成绩
+    List<Score> findByCourseCourseId(Integer courseId);
+
+    // 根据学生ID和课程ID查询成绩
+    @Query("SELECT s FROM Score s WHERE " +
+            "(:studentId IS NULL OR s.student.personId = :studentId) AND " +
+            "(:courseId IS NULL OR s.course.courseId = :courseId)")
+    List<Score> findByStudentIdAndCourseId(Integer studentId, Integer courseId);
+
+    // 根据学生学号或姓名模糊查询成绩
+    @Query("SELECT s FROM Score s WHERE " +
+            "(:numName = '' OR s.student.person.num LIKE %:numName% OR " +
+            "s.student.person.name LIKE %:numName%)")
+    List<Score> findScoreListByNumName(String numName);
+
+    // 根据课程名称模糊查询成绩
+    @Query("SELECT s FROM Score s WHERE " +
+            "(:name = '' OR s.course.name LIKE %:name%)")
+    List<Score> findScoreListByCourseName(String name);
+
 
 }

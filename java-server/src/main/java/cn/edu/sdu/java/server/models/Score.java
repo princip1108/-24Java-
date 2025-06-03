@@ -1,36 +1,46 @@
 package cn.edu.sdu.java.server.models;
 
 import jakarta.persistence.*;
-/*
- * Score 成绩表实体类  保存成绩的的基本信息信息，
- * Integer scoreId 人员表 score 主键 score_id
- * Student student 关联学生 student_id 关联学生的主键 student_id
- * Course course 关联课程 course_id 关联课程的主键 course_id
- * Integer mark 成绩
- * Integer ranking 排名
- */
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
 @Entity
-@Table(	name = "score",
-        uniqueConstraints = {
-        })
+@Table(name = "score")
 public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer scoreId;
+    private Integer scoreId; // 成绩ID，主键
 
     @ManyToOne
-    @JoinColumn(name = "personId")
-    private Student student;
+    @JoinColumn(name ="person_id")
+    private Student student; // 关联学生
 
     @ManyToOne
-    @JoinColumn(name = "courseId")
-    private Course course;
+    @JoinColumn(name = "course_id")
+    private Course course; // 关联课程
 
-    private Integer mark;
-    private Integer ranking;
+    private Double scoreValue; // 成绩值
 
+    private String grade; // 成绩等级（自动计算）
+
+    // 在持久化之前和更新之前自动计算成绩等级
+    @PrePersist
+    @PreUpdate
+    private void calculateGrade() {
+        if (scoreValue == null) return;
+
+        if (scoreValue >= 90) {
+            grade = "A";
+        } else if (scoreValue >= 80) {
+            grade = "B";
+        } else if (scoreValue >= 70) {
+            grade = "C";
+        } else if (scoreValue >= 60) {
+            grade = "D";
+        } else {
+            grade = "F";
+        }
+    }
 }

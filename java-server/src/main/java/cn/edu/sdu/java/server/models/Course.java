@@ -1,41 +1,31 @@
 package cn.edu.sdu.java.server.models;
 
-
-/*
- * Course 课程表实体类  保存课程的的基本信息信息，
- * Integer courseId 人员表 course 主键 course_id
- * String num 课程编号
- * String name 课程名称
- * Integer credit 学分
- * Course preCourse 前序课程 pre_course_id 关联前序课程的主键 course_id
- */
-
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+
 @Getter
 @Setter
 @Entity
-@Table(	name = "course",
-        uniqueConstraints = {
-        })
-public class Course  {
+@Table(name = "course")
+public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer courseId;
-    @NotBlank
-    @Size(max = 20)
-    private String num;
+    private Integer courseId; // 课程ID（主键）
 
-    @Size(max = 50)
-    private String name;
-    private Integer credit;
-    @ManyToOne
-    @JoinColumn(name="pre_course_id")
-    private Course preCourse;
-    @Size(max = 12)
-    private String coursePath;
+    @Column(unique = true, nullable = false)
+    private String courseCode; // 课序号（唯一）
 
+    @Column(nullable = false)
+    private String name; // 课程名称
+
+    @Column(nullable = false)
+    private Double credit; // 学分
+
+    @Column(nullable = false)
+    private String type; // 课程类型（必选/选修）
+
+
+
+    // 可选：课程描述等其他字段
 }

@@ -10,14 +10,39 @@ import java.util.*;
 /*
  * DataRequest 请求参数数据类
  * Map data 保存前端请求参数的Map集合
+ * public class DataRequest {
+    private Map<String, Object> data;
+    private Map<String, Object> params;
+
+    public DataRequest() {
+        data = new HashMap<>();
+        params = new HashMap<>(); // 初始化 params 字段
+    }
+
+    // 添加 getParams() 方法
+    public Map<String, Object> getParams() {
+        return params;
+    }
+
  */
 @Getter
 @Setter
 public class DataRequest {
-    private Map<String,Object> data;
+
+    private Map<String, Object> data;
+    private Map<String, Object> params;
+
+
+
+
+
 
     public DataRequest() {
         data = new HashMap<>();
+        params = new HashMap<>();
+    }
+    public Map<String, Object> getParams() {
+        return params;
     }
 
     public void add(String key, Object obj){
@@ -43,6 +68,7 @@ public class DataRequest {
             return (Boolean)obj;
         return "true".equals(obj.toString());
     }
+
 
     public List<?> getList(String key){
         Object obj = data.get(key);

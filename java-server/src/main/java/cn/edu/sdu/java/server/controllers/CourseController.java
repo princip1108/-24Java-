@@ -2,29 +2,40 @@ package cn.edu.sdu.java.server.controllers;
 
 import cn.edu.sdu.java.server.payload.request.DataRequest;
 import cn.edu.sdu.java.server.payload.response.DataResponse;
+import cn.edu.sdu.java.server.payload.response.OptionItemList;
 import cn.edu.sdu.java.server.services.CourseService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
-
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/course")
-
 public class CourseController {
     private final CourseService courseService;
+
     public CourseController(CourseService courseService) {
         this.courseService = courseService;
     }
+
+    // 获取课程选项列表
+    @PostMapping("/getCourseItemOptionList")
+    public OptionItemList getCourseItemOptionList(@Valid @RequestBody DataRequest dataRequest) {
+        return courseService.getCourseItemOptionList(dataRequest);
+    }
+
+    // 获取课程列表
     @PostMapping("/getCourseList")
     public DataResponse getCourseList(@Valid @RequestBody DataRequest dataRequest) {
         return courseService.getCourseList(dataRequest);
     }
 
+    // 保存课程
     @PostMapping("/courseSave")
     public DataResponse courseSave(@Valid @RequestBody DataRequest dataRequest) {
         return courseService.courseSave(dataRequest);
     }
+
+    // 删除课程
     @PostMapping("/courseDelete")
     public DataResponse courseDelete(@Valid @RequestBody DataRequest dataRequest) {
         return courseService.courseDelete(dataRequest);

@@ -211,11 +211,11 @@ public class StudentService {
             c = s.getCourse();
             m.put("studentNum", s.getStudent().getPerson().getNum());
             m.put("scoreId", s.getScoreId());
-            m.put("courseNum", c.getNum());
+            m.put("courseNum", c.getCourseCode());
             m.put("courseName", c.getName());
             m.put("credit", c.getCredit());
-            m.put("mark", s.getMark());
-            m.put("ranking", s.getRanking());
+            m.put("mark", s.getScoreValue());
+            m.put("ranking", s.getGrade());
             list.add(m);
         }
         return list;
@@ -232,13 +232,13 @@ public class StudentService {
         Course c;
         for (Score s : sList) {
             c = s.getCourse();
-            if (s.getMark() >= 90)
+            if (s.getScoreValue() >= 90)
                 count[0]++;
-            else if (s.getMark() >= 80)
+            else if (s.getScoreValue() >= 80)
                 count[1]++;
-            else if (s.getMark() >= 70)
+            else if (s.getScoreValue() >= 70)
                 count[2]++;
-            else if (s.getMark() >= 60)
+            else if (s.getScoreValue() >= 60)
                 count[3]++;
             else
                 count[4]++;
