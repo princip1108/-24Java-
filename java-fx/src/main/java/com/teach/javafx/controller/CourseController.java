@@ -127,6 +127,8 @@ public class CourseController {
             flowPane.getChildren().addAll(editButton, deleteButton);
             map.put("operate", flowPane);
             observableList.addAll(FXCollections.observableArrayList(map));
+            // 注意：这里不能直接添加map，否则会导致所有行都显示同一个按钮
+            // 需要每次创建新的FlowPane和Button实例
         }
         dataTableView.setItems(observableList);
     }
