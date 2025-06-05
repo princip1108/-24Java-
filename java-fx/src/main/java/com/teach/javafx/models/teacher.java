@@ -4,20 +4,20 @@ package com.teach.javafx.models;
 import java.time.LocalDate;
 
 public class teacher {
-    private String num;          // 工号
-    private String name;        // 姓名
-    private String dept;       // 院系
-    private String title;       // 职称
-    private String degree;      // 学位
-    private String card;        // 证件号码
-    private String gender;      // 性别
-    private LocalDate birthday; // 出生日期
-    private String email;       // 邮箱
-    private String phone;      // 电话
-    private String address;    // 地址
-    private String photo;      // 照片路径或Base64编码
+    private String num;
+    private String name;
+    private String dept;
+    private String title;
+    private String degree;
+    private String card;
+    private String gender;
+    private LocalDate birthday;
+    private String email;
+    private String phone;
+    private String address;
+    private String photo;
 
-    // 构造函数
+
     public teacher() {
     }
 
@@ -38,7 +38,7 @@ public class teacher {
         this.photo = photo;
     }
 
-    // Getter和Setter方法
+
     public String getNum() {
         return num;
     }

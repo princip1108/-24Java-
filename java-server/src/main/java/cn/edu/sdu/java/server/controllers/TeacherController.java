@@ -11,18 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * TeacherController 教师管理控制器
- * 提供教师信息的增删改查API接口
- *
- * 主要功能：
- * - 教师列表查询
- * - 教师信息详情
- * - 教师信息新增/修改
- * - 教师信息删除
- * - 分页查询
- * - 当前登录教师信息获取
- */
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/teacher")
@@ -36,11 +25,7 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    /**
-     * 获取教师列表
-     * @param dataRequest 包含查询条件的请求对象（numName: 工号或姓名）
-     * @return DataResponse 教师列表数据
-     */
+
     @PostMapping("/getTeacherList")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getTeacherList(@Valid @RequestBody DataRequest dataRequest) {
@@ -56,11 +41,7 @@ public class TeacherController {
         }
     }
 
-    /**
-     * 删除教师信息
-     * @param dataRequest 包含教师ID的请求对象（personId: 教师ID）
-     * @return DataResponse 删除结果
-     */
+
     @PostMapping("/teacherDelete")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse teacherDelete(@Valid @RequestBody DataRequest dataRequest) {
@@ -81,11 +62,6 @@ public class TeacherController {
         }
     }
 
-    /**
-     * 获取教师详细信息
-     * @param dataRequest 包含教师ID的请求对象（personId: 教师ID）
-     * @return DataResponse 教师详细信息
-     */
     @PostMapping("/getTeacherInfo")
     @PreAuthorize("hasRole('ADMIN') or hasRole('TEACHER')")
     public DataResponse getTeacherInfo(@Valid @RequestBody DataRequest dataRequest) {
@@ -106,11 +82,6 @@ public class TeacherController {
         }
     }
 
-    /**
-     * 分页获取教师数据
-     * @param dataRequest 包含分页和查询条件的请求对象
-     * @return DataResponse 分页教师数据
-     */
     @PostMapping("/getTeacherPageData")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse getTeacherPageData(@Valid @RequestBody DataRequest dataRequest) {
@@ -128,11 +99,7 @@ public class TeacherController {
         }
     }
 
-    /**
-     * 保存教师信息（新增或修改）
-     * @param dataRequest 包含教师信息的请求对象
-     * @return DataResponse 保存结果
-     */
+
     @PostMapping("/teacherEditSave")
     @PreAuthorize("hasRole('ADMIN')")
     public DataResponse teacherEditSave(@Valid @RequestBody DataRequest dataRequest) {
@@ -177,12 +144,7 @@ public class TeacherController {
         }
     }
 
-    /**
-     * 获取当前登录教师的个人信息
-     * 使用CommonMethod.getPersonId()获取当前登录用户的personId
-     * @param dataRequest 请求对象（可为空）
-     * @return DataResponse 当前教师的个人信息
-     */
+
     @PostMapping("/getCurrentTeacherInfo")
     @PreAuthorize("hasRole('TEACHER')")
     public DataResponse getCurrentTeacherInfo(@Valid @RequestBody DataRequest dataRequest) {
@@ -207,10 +169,7 @@ public class TeacherController {
         }
     }
 
-    /**
-     * 健康检查接口
-     * @return DataResponse 服务状态
-     */
+
     @GetMapping("/health")
     public DataResponse health() {
         return CommonMethod.getReturnMessageOK("教师服务运行正常");

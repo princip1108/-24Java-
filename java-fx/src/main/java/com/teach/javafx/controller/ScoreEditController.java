@@ -40,35 +40,30 @@ public class ScoreEditController {
     public void okButtonClick(){
         Map<String,Object> data = new HashMap<>();
 
-        // 获取学生选择（编辑模式下使用保存的ID，新增模式下从下拉框获取）
+
         if (currentStudentId != null) {
-            // 编辑模式：使用保存的学生ID
             data.put("studentId", currentStudentId);
         } else {
-            // 新增模式：从下拉框获取
             OptionItem studentOp = studentComboBox.getSelectionModel().getSelectedItem();
             if (studentOp != null && !"0".equals(studentOp.getValue())) {
                 data.put("studentId", Integer.parseInt(studentOp.getValue()));
             }
         }
 
-        // 获取课程选择（编辑模式下使用保存的ID，新增模式下从下拉框获取）
+
         if (currentCourseId != null) {
-            // 编辑模式：使用保存的课程ID
             data.put("courseId", currentCourseId);
         } else {
-            // 新增模式：从下拉框获取
             OptionItem courseOp = courseComboBox.getSelectionModel().getSelectedItem();
             if (courseOp != null && !"0".equals(courseOp.getValue())) {
                 data.put("courseId", Integer.parseInt(courseOp.getValue()));
             }
         }
 
-        // 获取成绩输入
+
         data.put("scoreValue", scoreField.getText());
         data.put("scoreId", scoreId);
 
-        // 关闭对话框并传递数据
         scoreTableController.doClose("ok", data);
     }
 
@@ -82,7 +77,7 @@ public class ScoreEditController {
     }
 
     public void init(){
-        // 初始化下拉框选项
+
         studentList = scoreTableController.getStudentList();
         studentComboBox.getItems().addAll(studentList);
 
@@ -92,7 +87,7 @@ public class ScoreEditController {
 
     public void showDialog(Map data){
         if (data == null) {
-            // 新增模式
+
             scoreId = null;
             currentStudentId = null;
             currentCourseId = null;
@@ -103,32 +98,29 @@ public class ScoreEditController {
             scoreField.setText("");
             gradeField.setText("");
         } else {
-            // 编辑模式
             scoreId = CommonMethod.getInteger(data, "scoreId");
-
-            // 保存当前的学生和课程ID
             currentStudentId = CommonMethod.getInteger(data, "studentId");
             currentCourseId = CommonMethod.getInteger(data, "courseId");
 
-            // 设置学生选择
+
             String studentId = CommonMethod.getString(data, "studentId");
             int index = CommonMethod.getOptionItemIndexByValue(studentList, studentId);
             studentComboBox.getSelectionModel().select(index);
             studentComboBox.setDisable(true); // 编辑时禁止修改学生
 
-            // 设置课程选择
+            // 课程
             String courseId = CommonMethod.getString(data, "courseId");
             index = CommonMethod.getOptionItemIndexByValue(courseList, courseId);
             courseComboBox.getSelectionModel().select(index);
             courseComboBox.setDisable(true); // 编辑时禁止修改课程
 
-            // 设置成绩和等级
+            // 成绩和等级
             scoreField.setText(CommonMethod.getString(data, "scoreValue"));
             gradeField.setText(CommonMethod.getString(data, "grade"));
         }
     }
 
-    // 成绩字段输入变化时自动计算等级
+    // 计算等级
     @FXML
     private void onScoreChanged() {
         String scoreStr = scoreField.getText();

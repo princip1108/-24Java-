@@ -7,10 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-/*
- * Volunteer数据操作接口，主要实现志愿活动的查询操作
- * 根据关联的Student的student_id查询获得List<Volunteer>对象集合,  命名规范
- */
+
 
 public interface VolunteerRepository extends JpaRepository<Volunteer,Integer> {
     List<Volunteer> findByStudentPersonId(Integer personId);

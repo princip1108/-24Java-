@@ -81,10 +81,7 @@ public class CompetitionController {
         setTableViewData(); // 刷新表格显示
     }
 
-    /**
-     * 刷新表格数据
-     * 功能：遍历原始数据，动态添加编辑按钮，绑定到可观察列表
-     */
+
     private void setTableViewData() {
         observableList.clear();
         for (int j = 0; j < ComList.size(); j++) {
@@ -140,7 +137,7 @@ public class CompetitionController {
         onQueryButtonClick();
     }
     /**
-     * 初始化编辑对话框（懒加载模式）
+     * 初始化编辑对话框
      */
     private void initDialog() {
         if (stage != null) return; // 避免重复初始化
@@ -174,7 +171,7 @@ public class CompetitionController {
         stage.close();
         if (!"ok".equals(cmd)) return; // 非保存操作直接退出
 
-        // 数据校验
+
         Integer personId = CommonMethod.getInteger(data, "personId");
         if (personId == null) {
             MessageDialog.showDialog("没有选中学生不能添加保存！");

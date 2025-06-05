@@ -11,21 +11,21 @@ import lombok.Setter;
 public class Score {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer scoreId; // 成绩ID，主键
+    private Integer scoreId;
 
     @ManyToOne
     @JoinColumn(name ="person_id")
-    private Student student; // 关联学生
+    private Student student;
 
     @ManyToOne
     @JoinColumn(name = "course_id")
-    private Course course; // 关联课程
+    private Course course;
 
-    private Double scoreValue; // 成绩值
+    private Double scoreValue;
 
-    private String grade; // 成绩等级（自动计算）
+    private String grade;
 
-    // 在持久化之前和更新之前自动计算成绩等级
+
     @PrePersist
     @PreUpdate
     private void calculateGrade() {

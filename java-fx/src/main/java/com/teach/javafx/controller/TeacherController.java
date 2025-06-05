@@ -29,25 +29,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * TeacherController 教师管理交互控制类
- *
- * 功能说明：
- * - 教师信息的增删改查操作
- * - 教师列表显示和搜索
- * - 教师详细信息编辑
- * - 照片上传和显示
- * - 数据导入功能
- * - 与后端API的完整集成
- *
- * 对应FXML文件：teacher-panel.fxml
- *
- * @author 系统生成
- * @version 2.0
- */
+
 public class TeacherController extends ToolController {
 
-    // ==================== 常量定义 ====================
+
     private static final String API_GET_TEACHER_LIST = "/api/teacher/getTeacherList";
     private static final String API_GET_TEACHER_INFO = "/api/teacher/getTeacherInfo";
     private static final String API_TEACHER_EDIT_SAVE = "/api/teacher/teacherEditSave";
@@ -60,15 +45,13 @@ public class TeacherController extends ToolController {
     private static final String PHOTO_PATH_PREFIX = "photo/";
     private static final String PHOTO_FILE_EXTENSION = ".jpg";
 
-    // ==================== FXML 界面组件 ====================
 
-    // 照片相关组件
     @FXML
     private ImageView photoImageView;
     @FXML
     private Button photoButton;
 
-    // 教师信息表格
+
     @FXML
     private TableView<Map> dataTableView;
     @FXML
@@ -81,8 +64,7 @@ public class TeacherController extends ToolController {
     private TableColumn<Map, String> titleColumn;
     @FXML
     private TableColumn<Map, String> degreeColumn;
-    // 注意：以下列在新的FXML中已移除，保留字段声明以避免编译错误
-    // 但在运行时这些字段将为null，需要在使用前检查
+
     @FXML
     private TableColumn<Map, String> cardColumn;  // 已移除
     @FXML
@@ -96,7 +78,7 @@ public class TeacherController extends ToolController {
     @FXML
     private TableColumn<Map, String> addressColumn;  // 已移除
 
-    // 教师信息编辑表单
+
     @FXML
     private TextField numField;
     @FXML
@@ -120,11 +102,11 @@ public class TeacherController extends ToolController {
     @FXML
     private TextField addressField;
 
-    // 查询组件
+
     @FXML
     private TextField numNameTextField;
 
-    // 新增的状态和信息显示组件
+
     @FXML
     private Label statusLabel;
     @FXML
@@ -132,44 +114,28 @@ public class TeacherController extends ToolController {
     @FXML
     private Label formModeLabel;
 
-    // 新位置的操作按钮
+
     @FXML
     private Button saveButton2;
     @FXML
     private Button clearButton2;
 
-    // ==================== 数据成员 ====================
 
-    /**
-     * 当前编辑的教师ID
-     */
     private Integer personId = null;
 
-    /**
-     * 教师信息列表数据
-     */
+
     private ArrayList<Map> teacherList = new ArrayList<>();
 
-    /**
-     * 性别选择列表数据
-     */
+
     private List<OptionItem> genderList;
 
-    /**
-     * TableView渲染列表
-     */
+
     private ObservableList<Map> observableList = FXCollections.observableArrayList();
 
-    /**
-     * 当前是否正在加载数据
-     */
+
     private boolean isLoading = false;
 
-    // ==================== 核心方法 ====================
 
-    /**
-     * 将教师数据集合设置到表格中显示
-     */
     private void setTableViewData() {
         Platform.runLater(() -> {
             observableList.clear();
@@ -178,13 +144,12 @@ public class TeacherController extends ToolController {
             }
             dataTableView.setItems(observableList);
 
-            // 更新记录数量显示
+
             int recordCount = teacherList != null ? teacherList.size() : 0;
             if (recordCountLabel != null) {
                 recordCountLabel.setText("共 " + recordCount + " 条记录");
             }
 
-            // 更新状态信息
             if (statusLabel != null) {
                 statusLabel.setText(recordCount > 0 ? "数据已加载" : "暂无数据");
             }
@@ -193,28 +158,24 @@ public class TeacherController extends ToolController {
         });
     }
 
-    /**
-     * 页面初始化方法
-     * 设置控件属性、初始化数据、绑定事件监听器
-     */
+
     @FXML
     public void initialize() {
         try {
             System.out.println("=== 教师管理界面初始化开始 ===");
 
-            // 初始化表格列
+
             initializeTableColumns();
 
-            // 初始化表格选择监听器
             initializeTableSelectionListener();
 
-            // 初始化性别下拉框
+
             initializeGenderComboBox();
 
-            // 初始化日期选择器
+
             initializeDatePicker();
 
-            // 加载初始数据
+
             loadTeacherListAsync("");
 
             System.out.println("=== 教师管理界面初始化完成 ===");
@@ -226,11 +187,9 @@ public class TeacherController extends ToolController {
         }
     }
 
-    /**
-     * 初始化表格列
-     */
+
     private void initializeTableColumns() {
-        // 只设置FXML中实际存在的列
+
         if (numColumn != null) {
             numColumn.setCellValueFactory(new MapValueFactory<>("num"));
         }
@@ -256,15 +215,11 @@ public class TeacherController extends ToolController {
             emailColumn.setCellValueFactory(new MapValueFactory<>("email"));
         }
 
-        // 这些列在新的FXML中已经移除，不再设置
-        // cardColumn, birthdayColumn, addressColumn
 
         System.out.println("表格列初始化完成");
     }
 
-    /**
-     * 初始化表格选择监听器
-     */
+
     private void initializeTableSelectionListener() {
         TableView.TableViewSelectionModel<Map> selectionModel = dataTableView.getSelectionModel();
         ObservableList<Integer> selectedIndices = selectionModel.getSelectedIndices();
@@ -273,9 +228,7 @@ public class TeacherController extends ToolController {
         System.out.println("表格选择监听器初始化完成");
     }
 
-    /**
-     * 初始化性别下拉框
-     */
+
     private void initializeGenderComboBox() {
         try {
             genderList = HttpRequestUtil.getDictionaryOptionItemList(GENDER_DICT_CODE);
@@ -290,20 +243,11 @@ public class TeacherController extends ToolController {
         }
     }
 
-    /**
-     * 初始化日期选择器
-     */
     private void initializeDatePicker() {
         birthdayPick.setConverter(new LocalDateStringConverter("yyyy-MM-dd"));
         System.out.println("日期选择器初始化完成");
     }
 
-    // ==================== 数据加载方法 ====================
-
-    /**
-     * 异步加载教师列表
-     * @param numName 查询条件（工号或姓名）
-     */
     private void loadTeacherListAsync(String numName) {
         if (isLoading) {
             System.out.println("正在加载数据，请稍候...");
@@ -350,11 +294,9 @@ public class TeacherController extends ToolController {
         new Thread(task).start();
     }
 
-    // ==================== 表单操作方法 ====================
 
-    /**
-     * 清除教师表单中的所有输入信息
-     */
+
+
     public void clearPanel() {
         Platform.runLater(() -> {
             personId = null;
@@ -384,10 +326,7 @@ public class TeacherController extends ToolController {
         });
     }
 
-    /**
-     * 验证表单输入数据
-     * @return 验证结果，true表示通过，false表示失败
-     */
+
     private boolean validateFormData() {
         // 验证工号
         String num = numField.getText();
@@ -405,7 +344,7 @@ public class TeacherController extends ToolController {
             return false;
         }
 
-        // 验证工号格式（可选）
+
         if (!num.trim().matches("^[a-zA-Z0-9]+$")) {
             MessageDialog.showDialog("工号只能包含字母和数字！");
             numField.requestFocus();
@@ -415,9 +354,7 @@ public class TeacherController extends ToolController {
         return true;
     }
 
-    /**
-     * 根据选中的教师记录加载详细信息到表单
-     */
+
     protected void changeTeacherInfo() {
         Map<String, Object> selectedItem = dataTableView.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
@@ -434,7 +371,7 @@ public class TeacherController extends ToolController {
 
         System.out.println("加载教师详细信息，personId: " + selectedPersonId);
 
-        // 异步加载教师详细信息
+
         Task<DataResponse> task = new Task<DataResponse>() {
             @Override
             protected DataResponse call() throws Exception {
@@ -475,10 +412,7 @@ public class TeacherController extends ToolController {
         new Thread(task).start();
     }
 
-    /**
-     * 将教师信息填充到表单中
-     * @param teacherInfo 教师信息Map
-     */
+
     private void fillFormWithTeacherInfo(Map<String, Object> teacherInfo) {
         if (teacherInfo == null) {
             return;
@@ -509,20 +443,12 @@ public class TeacherController extends ToolController {
         }
     }
 
-    // ==================== 事件处理方法 ====================
 
-    /**
-     * 表格行选择事件处理
-     * @param change 选择变化事件
-     */
     public void onTableRowSelect(ListChangeListener.Change<? extends Integer> change) {
         changeTeacherInfo();
     }
 
-    /**
-     * 查询按钮点击事件
-     * 根据输入的工号或姓名查询匹配的教师
-     */
+
     @FXML
     protected void onQueryButtonClick() {
         String numName = numNameTextField.getText();
@@ -530,39 +456,33 @@ public class TeacherController extends ToolController {
         loadTeacherListAsync(numName);
     }
 
-    /**
-     * 添加按钮点击事件
-     * 清空表单，准备添加新教师
-     */
+
     @FXML
     protected void onAddButtonClick() {
         System.out.println("准备添加新教师");
         clearPanel();
     }
 
-    /**
-     * 保存按钮点击事件
-     * 保存当前编辑的教师信息（新增或修改）
-     */
+
     @FXML
     protected void onSaveButtonClick() {
         try {
             System.out.println("开始保存教师信息");
 
-            // 验证用户权限
+
             if (!validateUserPermission()) {
                 return;
             }
 
-            // 验证表单数据
+
             if (!validateFormData()) {
                 return;
             }
 
-            // 构建表单数据
+
             Map<String, Object> formData = buildFormData();
 
-            // 异步保存数据
+
             saveTeacherAsync(formData);
 
         } catch (Exception e) {
@@ -572,10 +492,7 @@ public class TeacherController extends ToolController {
         }
     }
 
-    /**
-     * 验证用户权限
-     * @return true表示有权限，false表示无权限
-     */
+
     private boolean validateUserPermission() {
         if (AppStore.getJwt() == null) {
             MessageDialog.showDialog("用户未登录，请重新登录！");
@@ -591,14 +508,11 @@ public class TeacherController extends ToolController {
         return true;
     }
 
-    /**
-     * 构建表单数据
-     * @return 表单数据Map
-     */
+
     private Map<String, Object> buildFormData() {
         Map<String, Object> form = new HashMap<>();
 
-        // 基本信息 - 确保非空字段有默认值
+
         form.put("num", numField.getText() != null ? numField.getText().trim() : "");
         form.put("name", nameField.getText() != null ? nameField.getText().trim() : "");
         form.put("dept", deptField.getText() != null ? deptField.getText().trim() : "");
@@ -609,7 +523,7 @@ public class TeacherController extends ToolController {
         form.put("phone", phoneField.getText() != null ? phoneField.getText().trim() : "");
         form.put("address", addressField.getText() != null ? addressField.getText().trim() : "");
 
-        // 出生日期处理
+
         String birthday = "";
         if (birthdayPick != null && birthdayPick.getEditor() != null &&
             birthdayPick.getEditor().getText() != null) {
@@ -617,7 +531,7 @@ public class TeacherController extends ToolController {
         }
         form.put("birthday", birthday);
 
-        // 性别处理 - 确保有默认值
+
         String gender = "";
         if (genderComboBox != null && genderComboBox.getSelectionModel() != null &&
             genderComboBox.getSelectionModel().getSelectedItem() != null) {
@@ -625,11 +539,10 @@ public class TeacherController extends ToolController {
         }
         form.put("gender", gender != null ? gender : "");
 
-        // 后端需要的字段 - 使用null而不是空字符串
-        form.put("studentNum", null);  // 改为null，让后端处理默认值
-        form.put("enterTime", null);   // 改为null，让后端处理默认值
 
-        // 最终检查 - 将空字符串的关键字段设为null
+        form.put("studentNum", null);
+        form.put("enterTime", null);
+
         if (form.get("birthday").toString().isEmpty()) {
             form.put("birthday", null);
         }
@@ -641,10 +554,7 @@ public class TeacherController extends ToolController {
         return form;
     }
 
-    /**
-     * 异步保存教师信息
-     * @param formData 表单数据
-     */
+
     private void saveTeacherAsync(Map<String, Object> formData) {
         Task<DataResponse> task = new Task<DataResponse>() {
             @Override
@@ -676,7 +586,7 @@ public class TeacherController extends ToolController {
                         String errorMsg = response != null ? response.getMsg() : "未知错误";
                         System.err.println("教师信息保存失败: " + errorMsg);
 
-                        // 提供更友好的错误提示
+
                         String userMsg = errorMsg;
                         if (errorMsg.contains("rollback-only")) {
                             userMsg = "保存失败，可能原因：\n1. 工号已存在，请使用其他工号\n2. 数据格式不正确\n3. 必填字段缺失\n\n详细错误：" + errorMsg;
@@ -701,10 +611,7 @@ public class TeacherController extends ToolController {
         new Thread(task).start();
     }
 
-    /**
-     * 删除按钮点击事件
-     * 删除当前选中的教师数据
-     */
+
     @FXML
     protected void onDeleteButtonClick() {
         Map<String, Object> selectedItem = dataTableView.getSelectionModel().getSelectedItem();
@@ -729,7 +636,7 @@ public class TeacherController extends ToolController {
 
         System.out.println("删除教师，personId: " + deletePersonId);
 
-        // 异步删除
+
         Task<DataResponse> task = new Task<DataResponse>() {
             @Override
             protected DataResponse call() throws Exception {
@@ -747,7 +654,7 @@ public class TeacherController extends ToolController {
                         MessageDialog.showDialog("删除成功！");
                         clearPanel();
 
-                        // 刷新列表
+
                         String currentQuery = numNameTextField.getText();
                         loadTeacherListAsync(currentQuery);
 
@@ -771,43 +678,27 @@ public class TeacherController extends ToolController {
         new Thread(task).start();
     }
 
-    // ==================== ToolController 重写方法 ====================
 
-    /**
-     * 重写ToolController的doNew方法
-     * 新建教师时调用
-     */
     @Override
     public void doNew() {
         System.out.println("ToolController.doNew() 被调用");
         clearPanel();
     }
 
-    /**
-     * 重写ToolController的doSave方法
-     * 保存教师时调用
-     */
+
     @Override
     public void doSave() {
         System.out.println("ToolController.doSave() 被调用");
         onSaveButtonClick();
     }
 
-    /**
-     * 重写ToolController的doDelete方法
-     * 删除教师时调用
-     */
+
     @Override
     public void doDelete() {
         System.out.println("ToolController.doDelete() 被调用");
         onDeleteButtonClick();
     }
 
-    // ==================== 照片功能 ====================
-
-    /**
-     * 显示教师照片
-     */
     public void displayPhoto() {
         if (personId == null) {
             if (photoImageView != null) {
@@ -860,10 +751,7 @@ public class TeacherController extends ToolController {
         new Thread(task).start();
     }
 
-    /**
-     * 照片按钮点击事件
-     * 上传教师照片
-     */
+
     @FXML
     public void onPhotoButtonClick() {
         if (personId == null) {
@@ -884,7 +772,7 @@ public class TeacherController extends ToolController {
             return;
         }
 
-        // 验证文件大小（限制为5MB）
+
         long fileSize = file.length();
         if (fileSize > 5 * 1024 * 1024) {
             MessageDialog.showDialog("照片文件过大，请选择小于5MB的图片！");
@@ -893,7 +781,7 @@ public class TeacherController extends ToolController {
 
         System.out.println("上传教师照片，personId: " + personId + ", 文件: " + file.getName());
 
-        // 异步上传照片
+
         Task<DataResponse> task = new Task<DataResponse>() {
             @Override
             protected DataResponse call() throws Exception {
@@ -929,12 +817,7 @@ public class TeacherController extends ToolController {
         new Thread(task).start();
     }
 
-    // ==================== 数据导入功能 ====================
 
-    /**
-     * 导入按钮点击事件
-     * 从Excel文件导入教师数据
-     */
     @FXML
     protected void onImportButtonClick() {
         FileChooser fileDialog = new FileChooser();
@@ -952,7 +835,7 @@ public class TeacherController extends ToolController {
 
         System.out.println("导入教师数据，文件: " + file.getName());
 
-        // 异步导入数据
+
         Task<DataResponse> task = new Task<DataResponse>() {
             @Override
             protected DataResponse call() throws Exception {

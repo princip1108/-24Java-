@@ -25,7 +25,6 @@ import java.util.Map;
  * 实现课程的增删改查功能
  */
 public class CourseController {
-    // 查询条件控件
     @FXML
     private TextField courseCodeField;
     @FXML
@@ -37,7 +36,7 @@ public class CourseController {
     @FXML
     private Button addButton;
 
-    // 表格控件
+
     @FXML
     private TableView<Map<String, Object>> dataTableView;
     @FXML
@@ -54,19 +53,16 @@ public class CourseController {
     private List<Map<String,Object>> courseList = new ArrayList<>();  // 课程信息列表数据
     private final ObservableList<Map<String,Object>> observableList= FXCollections.observableArrayList();  // TableView渲染列表
 
-    /**
-     * 查询按钮点击事件
-     */
     @FXML
     private void onQueryButtonClick(){
         DataRequest req = new DataRequest();
 
-        // 获取查询条件
+        // 查询条件
         String courseCode = courseCodeField.getText();
         String name = nameField.getText();
         String type = typeComboBox.getValue();
 
-        // 只有非空条件才添加到请求中
+        // 非空条件
         if (courseCode != null && !courseCode.trim().isEmpty()) {
             req.add("courseCode", courseCode.trim());
         }
@@ -127,8 +123,7 @@ public class CourseController {
             flowPane.getChildren().addAll(editButton, deleteButton);
             map.put("operate", flowPane);
             observableList.addAll(FXCollections.observableArrayList(map));
-            // 注意：这里不能直接添加map，否则会导致所有行都显示同一个按钮
-            // 需要每次创建新的FlowPane和Button实例
+
         }
         dataTableView.setItems(observableList);
     }
@@ -150,7 +145,7 @@ public class CourseController {
         int j = Integer.parseInt(name.substring(6));
         Map<String,Object> data = courseList.get(j);
 
-        // 确认删除
+        // 删除
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("确认删除");
         alert.setHeaderText("删除课程");
@@ -219,7 +214,7 @@ public class CourseController {
 
         dialog.getDialogPane().setContent(vbox);
 
-        // 设置结果转换器
+
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
                 try {
@@ -261,18 +256,15 @@ public class CourseController {
 
     @FXML
     public void initialize() {
-        // 初始化课程类型下拉框
+
         typeComboBox.getItems().addAll("全部", "必修", "选修");
         typeComboBox.setValue("全部");
 
-        // 设置表格列
         courseCodeColumn.setCellValueFactory(new MapValueFactory<>("courseCode"));
         nameColumn.setCellValueFactory(new MapValueFactory<>("name"));
         creditColumn.setCellValueFactory(new MapValueFactory<>("credit"));
         typeColumn.setCellValueFactory(new MapValueFactory<>("type"));
         operateColumn.setCellValueFactory(new MapValueFactory<>("operate"));
-
-        // 初始加载数据
         onQueryButtonClick();
     }
 }

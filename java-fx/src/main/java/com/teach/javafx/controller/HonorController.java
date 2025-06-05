@@ -121,14 +121,13 @@ public class HonorController {
 
     @FXML
     public void initialize() {
-        // 配置表格列与数据键的映射关系
         studentNumColumn.setCellValueFactory(new MapValueFactory<>("studentNum"));
         studentNameColumn.setCellValueFactory(new MapValueFactory<>("studentName"));
         honorNameColumn.setCellValueFactory(new MapValueFactory<>("honorName"));
         honorLevelColumn.setCellValueFactory(new MapValueFactory<>("honorLevel"));
         editColumn.setCellValueFactory(new MapValueFactory<>("edit"));
 
-        // 初始化下拉框选项
+
         DataRequest req = new DataRequest();
         try {
             studentList = HttpRequestUtil.requestOptionItemList("/api/honor/getStudentItemOptionList", req);
@@ -141,12 +140,11 @@ public class HonorController {
             MessageDialog.showDialog("加载学生列表时出现异常: " + e.getMessage());
         }
 
-        // 添加默认选项并填充下拉框
+
         OptionItem item = new OptionItem(null, "0", "请选择");
         studentComboBox.getItems().addAll(item);
         studentComboBox.getItems().addAll(studentList);
 
-        // 启用表格多选模式并首次加载数据
         dataTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         onQueryButtonClick();
     }

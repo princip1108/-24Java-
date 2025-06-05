@@ -17,25 +17,23 @@ public class CourseController {
         this.courseService = courseService;
     }
 
-    // 获取课程选项列表
+
     @PostMapping("/getCourseItemOptionList")
     public OptionItemList getCourseItemOptionList(@Valid @RequestBody DataRequest dataRequest) {
         return courseService.getCourseItemOptionList(dataRequest);
     }
 
-    // 获取课程列表
     @PostMapping("/getCourseList")
     public DataResponse getCourseList(@Valid @RequestBody DataRequest dataRequest) {
         return courseService.getCourseList(dataRequest);
     }
 
-    // 保存课程
+
     @PostMapping("/courseSave")
     public DataResponse courseSave(@Valid @RequestBody DataRequest dataRequest) {
         return courseService.courseSave(dataRequest);
     }
 
-    // 删除课程
     @PostMapping("/courseDelete")
     public DataResponse courseDelete(@Valid @RequestBody DataRequest dataRequest) {
         return courseService.courseDelete(dataRequest);

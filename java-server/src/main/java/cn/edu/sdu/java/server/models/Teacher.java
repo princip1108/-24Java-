@@ -5,15 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import java.util.Date;
 
-/**
- * Teacher教师表实体类 保存教师的专业信息
- * Integer personId 教师表 teacher 主键 person_id 与Person表主键相同
- * Person person 关联到该教师所用的Person对象，账户所对应的人员信息 person_id 关联 person 表主键 person_id
- * String title 职称
- * String degree 学位
- * Integer studentNum 管理学生数量
- * Date enterTime 入职时间
- */
+
 @Entity
 @Table(name = "teacher")
 public class Teacher {
@@ -26,7 +18,7 @@ public class Teacher {
     private Person person;
 
     @Size(max = 50)
-    private String name;  // 添加缺失的name字段
+    private String name;
 
     @Size(max = 50)
     private String title;
@@ -39,16 +31,16 @@ public class Teacher {
     @Temporal(TemporalType.DATE)
     private Date enterTime;
 
-    // 默认构造函数
+
     public Teacher() {
     }
 
-    // 带参构造函数
+
     public Teacher(Integer personId) {
         this.personId = personId;
     }
 
-    // Getter和Setter方法
+
     public Integer getPersonId() {
         return personId;
     }

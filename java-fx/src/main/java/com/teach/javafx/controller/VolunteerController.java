@@ -37,11 +37,11 @@ public class VolunteerController {
     @FXML
     private TableColumn<Map, Button> editColumn;
     //--------------------- 数据存储相关 ---------------------
-    private ArrayList<Map> VolList = new ArrayList();          // 原始成绩数据（后端返回）
-    private ObservableList<Map> observableList = FXCollections.observableArrayList(); // 表格可观察数据源
+    private ArrayList<Map> VolList = new ArrayList();
+    private ObservableList<Map> observableList = FXCollections.observableArrayList();
 
     @FXML
-    private ComboBox<OptionItem> studentComboBox;      // 学生筛选下拉框
+    private ComboBox<OptionItem> studentComboBox;
     @FXML
     private ComboBox<OptionItem> activityComboBox;
     @FXML
@@ -50,14 +50,14 @@ public class VolunteerController {
     private List<OptionItem> activityList;
 
     //--------------------- 对话框控制相关 ---------------------
-    private VolEditController volEditController = null; // 活动编辑对话框控制器
-    private Stage stage = null;                       // 编辑对话框的舞台
+    private VolEditController volEditController = null;
+    private Stage stage = null;
     public List<OptionItem> getStudentList() {
         return studentList;
     }
     @FXML
     private void onQueryButtonClick() {
-        // 获取筛选条件：选中的学生和活动
+
         Integer personId = 0;
         OptionItem op = studentComboBox.getSelectionModel().getSelectedItem();
         if (op != null) personId = Integer.parseInt(op.getValue());
@@ -73,28 +73,25 @@ public class VolunteerController {
         activityComboBox.getItems().clear();
         activityComboBox.getItems().addAll(new OptionItem(null, "0", "请选择"));
         activityComboBox.getItems().addAll(activityList);
-        // 处理响应结果
+
         if (res != null && res.getCode() == 0) {
             VolList = (ArrayList<Map>) res.getData(); // 更新原始数据
         }
-        setTableViewData(); // 刷新表格显示
+        setTableViewData();
     }
 
-    /**
-     * 刷新表格数据
-     * 功能：遍历原始数据，动态添加编辑按钮，绑定到可观察列表
-     */
+
     private void setTableViewData() {
         observableList.clear();
         for (int j = 0; j < VolList.size(); j++) {
             Map map = VolList.get(j);
             Button editButton = new Button("编辑");
-            editButton.setId("edit" + j); // 唯一标识按钮（edit+行号）
+            editButton.setId("edit" + j);
             editButton.setOnAction(e -> editItem(((Button) e.getSource()).getId()));
-            map.put("edit", editButton); // 将按钮存入数据Map的"edit"键
-            observableList.add(map); // 添加至可观察列表
+            map.put("edit", editButton);
+            observableList.add(map);
         }
-        dataTableView.setItems(observableList); // 绑定表格数据源
+        dataTableView.setItems(observableList);
     }
     /**
      * 打开编辑对话框
@@ -135,23 +132,21 @@ public class VolunteerController {
         dataTableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         onQueryButtonClick();
     }
-    /**
-     * 初始化编辑对话框（懒加载模式）
-     */
+
     private void initDialog() {
-        if (stage != null) return; // 避免重复初始化
+        if (stage != null) return;
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(MainApplication.class.getResource("vol-edit-dialog.fxml"));
             Scene scene = new Scene(fxmlLoader.load(), 260, 140);
             stage = new Stage();
-            stage.initOwner(MainApplication.getMainStage()); // 设置父窗口
-            stage.initModality(Modality.NONE); // 非模态对话框
-            stage.setAlwaysOnTop(true); // 保持置顶
+            stage.initOwner(MainApplication.getMainStage());
+            stage.initModality(Modality.NONE);
+            stage.setAlwaysOnTop(true);
             stage.setScene(scene);
             stage.setTitle("志愿活动录入对话框！");
             stage.setOnCloseRequest(event -> MainApplication.setCanClose(true)); // 恢复主窗口关闭权限
 
-            // 获取对话框控制器并建立双向关联
+
             volEditController = (VolEditController) fxmlLoader.getController();
             volEditController.setVolunteerController(this);
             volEditController.init(); // 初始化对话框组件
@@ -160,24 +155,20 @@ public class VolunteerController {
         }
     }
 
-    /**
-     * 处理对话框关闭事件
-     * @param cmd 操作命令（"ok"表示保存）
-     * @param data 编辑后的数据
-     */
-    public void doClose(String cmd, Map<String, Object> data) {
-        MainApplication.setCanClose(true); // 允许主窗口关闭
-        stage.close();
-        if (!"ok".equals(cmd)) return; // 非保存操作直接退出
 
-        // 数据校验
+    public void doClose(String cmd, Map<String, Object> data) {
+        MainApplication.setCanClose(true);
+        stage.close();
+        if (!"ok".equals(cmd)) return;
+
+
         Integer personId = CommonMethod.getInteger(data, "personId");
         if (personId == null) {
             MessageDialog.showDialog("没有选中学生不能添加保存！");
             return;
         }
 
-        // 构建保存请求
+
         DataRequest req = new DataRequest();
         req.add("personId", personId);
         req.add("volunteerId", CommonMethod.getInteger(data, "volunteerId"));
@@ -185,15 +176,15 @@ public class VolunteerController {
         req.add("timeLong", CommonMethod.getInteger(data, "timeLong"));
         DataResponse res = HttpRequestUtil.request("/api/volunteer/volunteerSave", req);
 
-        // 处理保存结果
+
         if (res != null && res.getCode() == 0) {
-            onQueryButtonClick(); // 保存成功后刷新表格
+            onQueryButtonClick();
         }
     }
     @FXML
     private void onAddButtonClick() {
         initDialog();
-        volEditController.showDialog(null); // 传递null表示新增操作
+        volEditController.showDialog(null);
         MainApplication.setCanClose(false);
         stage.showAndWait();
     }
